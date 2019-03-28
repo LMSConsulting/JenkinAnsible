@@ -13,13 +13,13 @@
 	   
   - name: Copy license file from server to client
     copy:
-	   src: /binaries/pingfederate.lic
-	   dest: /likeminds/softwares
+       src: /binaries/pingfederate.lic
+       dest: /likeminds/softwares
 	   
   - name: Copy data file from server to client
     copy:
-	   src: /binaries/data.zip
-	   dest: /likeminds/softwares
+       src: /binaries/data.zip
+       dest: /likeminds/softwares
 
   - name: Move the PingFederate zip File to Client Softwares Folder
     shell: cd /likeminds/softwares ; cp -R pingfederate-9.2.0.zip /likeminds/programfiles ;
