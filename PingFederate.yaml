@@ -9,13 +9,11 @@
   - name: Copy the file from server machine to client machine.
     copy:
        src: /binaries/pingfederate-9.2.0.zip
-       dest: /likeminds/softwares
-	   
+       dest: /likeminds/softwares                                                                                                                       
   - name: Copy license file from server to client
     copy:
        src: /binaries/pingfederate.lic
-       dest: /likeminds/softwares
-	   
+       dest: /likeminds/softwares                                                                                                                      	   
   - name: Copy data file from server to client
     copy:
        src: /binaries/data.zip
