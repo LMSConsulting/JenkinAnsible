@@ -1,0 +1,44 @@
+---
+- hosts: Jenkinclient
+  become: yes
+  become_method: sudo
+  connection: ssh
+  gather_facts: no
+
+  tasks:
+  - name: Copy the file from server machine to client machine.
+    copy:
+       src: /binaries/pingfederate-9.2.0.zip
+       dest: /likeminds/softwares
+	   
+  - name: Copy license file from server to client
+    copy:
+	   src: /binaries/pingfederate.lic
+	   dest: /likeminds/softwares
+	   
+  - name: Copy data file from server to client
+    copy:
+	   src: /binaries/data.zip
+	   dest: /likeminds/softwares
+
+  - name: Move the PingFederate zip File to Client Softwares Folder
+    shell: cd /likeminds/softwares ; cp -R pingfederate-9.2.0.zip /likeminds/programfiles ;
+
+  - name: Unzip the PingFederate File
+    shell: cd /likeminds/programfiles ; unzip pingfederate-9.2.0.zip ;
+
+  - name: Move the PingFederate Licence File in the PingFederate Path
+    shell: cd /likeminds/softwares; cp -R pingfederate.lic /likeminds/programfiles/pingfederate-9.2.0/pingfederate/server/default/conf/ ;
+
+  - name: Move the Data.zip File for New PingFederate Server
+    shell: cd /likeminds/softwares ; cp -R data.zip /likeminds/programfiles/pingfederate-9.2.0/pingfederate/server/default/data/drop-in-deployer/ ;
+
+  - name: Give Read Premission for the Data.zip file
+    shell: cd /likeminds/programfiles/pingfederate-9.2.0/pingfederate/server/default/data/drop-in-deployer/ ; chmod -R 777 data.zip ;
+
+  - name: Start the PingFederate in Nohup Command
+    shell: cd /likeminds/programfiles/pingfederate-9.2.0/pingfederate/bin ; nohup ./run.sh &
+
+  - pause: seconds=35
+...
+
