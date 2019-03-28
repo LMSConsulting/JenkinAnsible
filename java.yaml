@@ -1,0 +1,30 @@
+---
+- hosts: Jenkinclient
+  gather_facts: false
+  vars_files:
+     - var.yaml   
+  tasks:
+  - name: Create an  Necessary Directory
+    shell: cd / ; mkdir {{clientfolder}} ; mkdir /{{clientfolder}}/{{softwarefolder}} ; mkdir /{{clientfolder}}/{{programfilesfolder}} ; chmod -R 777 {{clientfolder}}/ ; chmod -R 777 /{{clientfolder}}/* ;
+
+  - name: Copy the file from server machine to client machine.
+    copy:
+       src: "{{srcfile}}/{{filename}}"
+       dest: "{{clientsoft}}/"
+
+  - name: Untar the JDK file.
+    shell: cd {{clientsoft}}/ ; tar -xvzf {{filename}} ; mv {{clientsoft}}/{{foldername}} {{jdkpath}} ;
+
+  - name: Export Environment variables
+    shell: alternatives --install /usr/bin/java java {{jdkpath}}/jre/bin/java 20000 ; alternatives --install /usr/bin/jar jar {{jdkpath}}/bin/jar 20000 ; alternatives --install /usr/bin/javac javac {{jdkpath}}/bin/javac 20000 ; alternatives --install /usr/bin/javaws javaws {{jdkpath}}/jre/bin/javaws 20000 ; alternatives --set java {{jdkpath}}/jre/bin/java ; alternatives --set jar {{jdkpath}}/bin/jar ; alternatives --set javac {{jdkpath}}/bin/javac ; alternatives --set javaws {{jdkpath}}/jre/bin/javaws ;
+ 
+  - name: Export the JAVA_HOME & PATH
+    become: yes
+    become_method: sudo 
+    shell: echo "export JAVA_HOME="{{jdkpath}}/"" >> ~/.bash_profile ; echo "export PATH=$PATH:{{jdkpath}}/bin""" >> ~/.bash_profile ; cd ~ ; . ./.bash_profile ;
+  - name: Get Java version
+    shell: java -version |& awk -F'"' '{print $2}'
+    register: java_version
+
+  - debug: msg="{{ java_version.stdout_lines }}"
+...

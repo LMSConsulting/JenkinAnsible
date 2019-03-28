@@ -1,0 +1,11 @@
+---
+#Environment variable for JDK 1.8.0.201
+filename: jdk8.tar.gz
+foldername: jdk1.8.0_201
+srcfile: /binaries
+clientsoft: /likeminds/softwares
+jdkpath: /likeminds/programfiles/jdk1.8.0_201
+clientfolder: likeminds
+softwarefolder: softwares
+programfilesfolder: programfiles
+...
