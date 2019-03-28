@@ -2,7 +2,7 @@
 - hosts: "Jenkinclient"
   gather_facts: false
   vars_files:
-     - variable.yaml
+     - variable.yml
   tasks:
    - name: Copy the file from server machine to client machine.
      copy:
